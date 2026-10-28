@@ -1,0 +1,35 @@
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-24.04"
+  config.vm.hostname = "iot-host-vm"
+
+  # VM IP accessible from the host and potentially the cluster
+  config.vm.network "private_network", ip: "192.168.56.10"
+
+  # GitLab: host port 8081 -> VM port 80
+  config.vm.network "forwarded_port",
+    guest: 80, host: 8081, host_ip: "127.0.0.1"
+
+  # Argo CD access
+  config.vm.network "forwarded_port",
+    guest: 9000, host: 9000, host_ip: "127.0.0.1"
+
+  # Playground application access
+  config.vm.network "forwarded_port",
+    guest: 9091, host: 9091, host_ip: "127.0.0.1"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "iot-host-vm"
+    vb.cpus = 4
+    vb.memory = 8192
+  end
+
+  config.vm.provision "shell",
+    path: "./scripts/install.sh",
+    reset: true
+
+  config.vm.provision "shell",
+    path: "./scripts/setup.sh",
+    privileged: false
+end
+
