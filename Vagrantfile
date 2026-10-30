@@ -1,5 +1,7 @@
 
 Vagrant.configure("2") do |config|
+  bonus = ENV["IOT_BONUS"] == "1"
+
   config.vm.box = "bento/ubuntu-24.04"
   config.vm.hostname = "iot-host-vm"
 
@@ -25,11 +27,11 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell",
-    path: "./scripts/install.sh",
+    path: bonus ? "bonus/scripts/install.sh" : "p3/scripts/install.sh",
     reset: true
 
   config.vm.provision "shell",
-    path: "./scripts/setup.sh",
+    path: bonus ? "bonus/scripts/setup.sh" : "p3/scripts/setup.sh",
     privileged: false
 end
 

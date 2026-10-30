@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://192.168.56.10/root/argocd.git
+    repoURL: http://192.168.56.10/root/app.git
     targetRevision: HEAD
     path: confs/manifests
   destination:

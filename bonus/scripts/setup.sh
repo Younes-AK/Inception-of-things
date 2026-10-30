@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Vagrant uploads shell provisioners to /tmp; the project is mounted here.
-cd /vagrant
+cd /vagrant/bonus
 
 # Create and seed the GitLab source before Argo CD tries to clone it.
 bash scripts/bootstrap-gitlab.sh
@@ -44,7 +44,7 @@ kubectl rollout status deployment/argocd-server \
   -n argocd --timeout=600s
 
 # Deploy the application when ready.
-kubectl apply -f /vagrant/confs/application.yaml
+kubectl apply -f /vagrant/bonus/confs/application.yaml
 kubectl wait -n argocd application/wil-playground \
   --for=jsonpath='{.status.sync.status}'=Synced --timeout=600s
 kubectl wait -n argocd application/wil-playground \

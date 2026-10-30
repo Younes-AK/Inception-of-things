@@ -36,5 +36,5 @@ kubectl rollout status deployment/argocd-server \
   -n argocd --timeout=600s
 
 # Deploy the application when ready.
-kubectl apply -f /vagrant/IOT/p3/confs/application.yaml
-echo "======================= Setup Done ==========================
+kubectl apply -f /vagrant/p3/confs/application.yaml
+echo "======================= Setup Done =========================="
