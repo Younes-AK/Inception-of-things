@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
 
   # Playground application access
   config.vm.network "forwarded_port",
-    guest: 9091, host: 9091, host_ip: "127.0.0.1"
+    guest: 8889, host: 8889, host_ip: "127.0.0.1"
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "iot-host-vm"

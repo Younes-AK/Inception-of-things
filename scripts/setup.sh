@@ -2,11 +2,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "$0")/.."
+# Vagrant uploads shell provisioners to /tmp; the project is mounted here.
+cd /vagrant
+
+# Create and seed the GitLab source before Argo CD tries to clone it.
+bash scripts/bootstrap-gitlab.sh
 
 # Create cluster if it doesn't exist.
-if ! k3d cluster list -o json 2>/dev/null \
-  | grep -q '"name":"yakazdao"'; then
+if ! k3d cluster list --no-headers 2>/dev/null \
+  | awk '{print $1}' | grep -qx yakazdao; then
   k3d cluster create yakazdao \
     -p "8889:30888@loadbalancer"
 fi
@@ -41,5 +45,12 @@ kubectl rollout status deployment/argocd-server \
 
 # Deploy the application when ready.
 kubectl apply -f /vagrant/confs/application.yaml
+kubectl wait -n argocd application/wil-playground \
+  --for=jsonpath='{.status.sync.status}'=Synced --timeout=600s
+kubectl wait -n argocd application/wil-playground \
+  --for=jsonpath='{.status.health.status}'=Healthy --timeout=600s
 echo "======================= Setup Done =========================="
 
+# Replace any previous Argo CD forward, including one bound only to localhost.
+# pkill -f '^kubectl port-forward .*svc/argocd-server 9000:443$' || true
+nohup kubectl port-forward --address 0.0.0.0 -n argocd svc/argocd-server 9000:443 > /tmp/argocd-port-forward.log 2>&1 < /dev/null &
