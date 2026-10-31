@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Younes-AK/argocd.git
+    repoURL: https://github.com/Younes-AK/yakazdao.git
     targetRevision: HEAD
     path: ./confs/manifests
   destination:
