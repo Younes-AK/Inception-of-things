@@ -4,7 +4,7 @@ Vagrant.configure("2") do |config|
   config.vm.boot_timeout = 600
 
   # =========================
-  # K3s Server
+  # K3s Server              
   # =========================
   config.vm.define "hichamS" do |server|
     server.vm.hostname = "hichamS"
@@ -12,10 +12,9 @@ Vagrant.configure("2") do |config|
 
     server.vm.provider "virtualbox" do |vb|
       vb.name = "hichamS"
-      vb.cpus = 2
-      vb.memory = 2048
-    #   vb.customize ["modifyvm", :id, "--uart1", "off"]
-    #   vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+      vb.cpus = 1
+      vb.memory = 1024
+
     end
 
     server.vm.provision "shell", path: "scripts/server.sh"

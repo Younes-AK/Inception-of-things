@@ -24,7 +24,6 @@ spec:
                 name: app-two
                 port:
                   number: 80
-    # no host: any other request falls through to app3
     - http:
         paths:
           - path: /
